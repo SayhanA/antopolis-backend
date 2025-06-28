@@ -36,4 +36,26 @@ router.post("/", upload.single("image"), async (req, res) => {
   }
 });
 
+// GET /api/foods?category=Lunch&search=salad
+router.get("/", async (req, res) => {
+  try {
+    const { category, search } = req.query;
+
+    const filter = {};
+    if (category) filter.category = category;
+
+    if (search) {
+      // Case-insensitive partial match on name
+      filter.name = { $regex: search, $options: "i" };
+    }
+
+    const foods = await Food.find(filter);
+
+    res.status(200).json(foods);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to fetch foods" });
+  }
+});
+
+
 module.exports = router;
