@@ -12,11 +12,12 @@ app.use(cors());
 app.use(express.json());
 app.use("/uploads", express.static("uploads"));
 
-app.use('/', (req, res, next) => {
-  res.send('hello world.')
-})
 app.use("/api/foods", foodRoutes);
 app.use("/api/categories", categoryRoutes);
+
+app.use('/', (req, res, next) => {
+  res.send('Hello world.')
+})
 
 mongoose
   .connect(
